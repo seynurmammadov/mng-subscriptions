@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { ILogin } from "../../../redux/interface/auth";
 import { useDispatch } from "react-redux";
 import { userLogin } from "../../../redux/actions/Auth";
@@ -83,10 +83,11 @@ export default function Login() {
     [setInputVal]
   );
 
+  const { push } = useHistory();
   const handleSubmit = React.useCallback(
     (e) => {
       e.preventDefault();
-      userLogin(inputVal)(dispatch);
+      userLogin(inputVal, push)(dispatch);
     },
     [inputVal]
   );
