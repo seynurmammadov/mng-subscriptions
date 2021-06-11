@@ -1,7 +1,7 @@
 package az.code.backend.controllers;
 
 import az.code.backend.models.Subscribe;
-import az.code.backend.services.SubscribeService;
+import az.code.backend.services.interfaces.SubscribeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

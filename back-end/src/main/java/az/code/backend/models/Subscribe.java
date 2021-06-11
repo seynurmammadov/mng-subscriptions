@@ -3,9 +3,11 @@ package az.code.backend.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 @Data
@@ -17,10 +19,14 @@ public class Subscribe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    
+    @NotNull(message = "Filed could not be null")
     private String name;
+    @NotNull(message = "Filed could not be null")
+    @PositiveOrZero(message = "monthlyFee couldn't be negative")
     private double fee;
+    @PastOrPresent
     private Date createdDate;
+    @FutureOrPresent
     private Date nextPaymentDate;
     private boolean isSubscribed=true;
     @ManyToOne
@@ -43,4 +49,6 @@ public class Subscribe {
         this.mUser = mUser;
         this.card = card;
     }
+
+
 }

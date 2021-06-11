@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/api/login").permitAll()
                 .antMatchers("/api/register").permitAll()
+                .antMatchers("/**").permitAll()
                 // all other requests need to be authenticated
                         .anyRequest().authenticated().and()
                 // make sure we use stateless session; session won't be used to

@@ -1,4 +1,4 @@
-package az.code.backend.services;
+package az.code.backend.services.interfaces;
 
 import az.code.backend.models.Subscribe;
 

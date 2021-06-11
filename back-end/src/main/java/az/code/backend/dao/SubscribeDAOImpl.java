@@ -8,9 +8,14 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-@AllArgsConstructor
+
 public class SubscribeDAOImpl implements SubscribeDAO {
     SubscribeRepository subscribeRepository;
+
+    public SubscribeDAOImpl(SubscribeRepository subscribeRepository) {
+        this.subscribeRepository = subscribeRepository;
+    }
+
     @Override
     public void addSubscription(Subscribe subscribe) {
         subscribeRepository.save(subscribe);
