@@ -3,6 +3,7 @@ package az.code.backend.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,14 +22,19 @@ public class mUser {
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
-    private Date createdAt;
+    private String name;
+    private String surname;
+    private Date createdAt=new Date();
     private String phone;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "mUser",fetch = FetchType.EAGER)
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "mUser")
     private List<Subscribe> subscribes;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "mUser")
     private List<Card> cards;
+    public void setRole(String name){
+       this.roles.add(Role.builder().name(name).build());
+    }
 }
 
