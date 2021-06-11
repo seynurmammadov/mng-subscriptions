@@ -2,9 +2,10 @@ package az.code.backend.services;
 
 import az.code.backend.dao.SubscribeDAO;
 import az.code.backend.models.Subscribe;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
-
+@Service
 public class SubscribeServiceImpl implements SubscribeService {
     SubscribeDAO subscribeDAO;
     @Override
