@@ -1,49 +1,57 @@
 package az.code.backend.services;
 
 import az.code.backend.dao.SubscribeDAO;
+import az.code.backend.models.Pagination;
 import az.code.backend.models.Subscribe;
+import az.code.backend.models.dto.MapStructMapper;
+import az.code.backend.models.dto.SubscribeDTO;
+import az.code.backend.services.interfaces.SubscribeService;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 @Service
 public class SubscribeServiceImpl implements SubscribeService {
+    final
     SubscribeDAO subscribeDAO;
-    @Override
-    public void addSubscription(Subscribe subscribe) {
-        subscribeDAO.addSubscription(subscribe);
+    final
+    MapStructMapper mapStructMapper;
+
+    public SubscribeServiceImpl(MapStructMapper mapStructMapper, SubscribeDAO subscribeDAO) {
+        this.mapStructMapper = mapStructMapper;
+        this.subscribeDAO = subscribeDAO;
     }
 
     @Override
-    public void deleteSubscription(long id) {
-        subscribeDAO.deleteSubscription(id);
+    public void save(String email,Subscribe subscribe) {
+        subscribeDAO.save( email,subscribe);
     }
 
     @Override
-    public void unSubscribe(long id) {
-        subscribeDAO.unSubscribe(id);
-    }
-    @Override
-    public void subscribe(long id) {
-        subscribeDAO.subscribe(id);
+    public SubscribeDTO delete(String email, long id) {
+        return mapStructMapper.subToSubDTO(subscribeDAO.delete(email,id));
     }
 
     @Override
-    public void updateName(long id, String name) {
-        subscribeDAO.updateName(id,name);
+    public void unSubscribe(String email,long id) {
+        subscribeDAO.unSubscribe(email,id);
+    }
+    @Override
+    public void subscribe(String email,long id) {
+        subscribeDAO.subscribe(email,id);
     }
 
     @Override
-    public void updateFee(long id, double fee) {
-        subscribeDAO.updateFee(id, fee);
+    public SubscribeDTO getById(String email,long id) {
+        return mapStructMapper.subToSubDTO(subscribeDAO.getById(email,id));
     }
 
     @Override
-    public void updateCreatedDate(long id, Date createdDate) {
-        subscribeDAO.updateCreatedDate(id,createdDate);
+    public Pagination<SubscribeDTO> getByCardId(String email, long card_id, HttpServletRequest request, Integer count, Integer page) {
+        return new Pagination<>(request, count, page,mapStructMapper.subsToSubDTOs(subscribeDAO.getByCardId(email,card_id)));
     }
-
     @Override
-    public void updateNextPaymentDate(long id, Date nextPaymentDate) {
-        subscribeDAO.updateNextPaymentDate(id, nextPaymentDate);
+    public Pagination<SubscribeDTO>  getAll(String email, HttpServletRequest request, Integer count, Integer page) {
+        return new Pagination<>(request, count, page,mapStructMapper.subsToSubDTOs(subscribeDAO.getAll(email)));
     }
 }
