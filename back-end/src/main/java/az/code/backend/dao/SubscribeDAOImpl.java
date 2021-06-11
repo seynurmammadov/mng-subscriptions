@@ -1,51 +1,73 @@
 package az.code.backend.dao;
 
 import az.code.backend.models.Subscribe;
+import az.code.backend.models.mUser;
 import az.code.backend.repositories.SubscribeRepository;
+import az.code.backend.repositories.mUserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
 public class SubscribeDAOImpl implements SubscribeDAO {
+    mUserRepository userRepository;
     SubscribeRepository subscribeRepository;
-    @Override
-    public void addSubscription(Subscribe subscribe) {
-        subscribeRepository.save(subscribe);
+
+    @Autowired
+    public SubscribeDAOImpl(SubscribeRepository subscribeRepository, mUserRepository userRepository) {
+        this.subscribeRepository = subscribeRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public void deleteSubscription(long id) {
-        subscribeRepository.deleteById(id);
+    public void save(String email,Subscribe subscribe) {
+        mUser user= userRepository.findByEmail(email);
+        user.getSubscribes().add(subscribe);
+        userRepository.save(user);
     }
 
     @Override
-    public void unSubscribe(long id) {
-        subscribeRepository.unSubscribe(id);
-    }
-    public void subscribe(long id){
-        subscribeRepository.subscribe(id);
-    }
-
-    @Override
-    public void updateName(long id, String name) {
-        subscribeRepository.updateName(id,name);
+    public Subscribe delete(String email,long id) {
+        Subscribe subscribe =getById(email,id);
+        mUser user= userRepository.findByEmail(email);
+        user.getSubscribes().remove(subscribe);
+        userRepository.save(user);
+        return subscribe;
     }
 
     @Override
-    public void updateFee(long id, double fee) {
-        subscribeRepository.updateFee(id,fee);
+    public void unSubscribe(String email,long id) {
+        mUser user= userRepository.findByEmail(email);
+        user.getSubscribes().stream().filter(s->s.getId()==id).findFirst().get().setSubscribed(false);
+        userRepository.save(user);
+    }
+    public void subscribe(String email,long id){
+        mUser user= userRepository.findByEmail(email);
+        user.getSubscribes().stream().filter(s->s.getId()==id).findFirst().get().setSubscribed(true);
+        userRepository.save(user);
     }
 
     @Override
-    public void updateCreatedDate(long id, Date createdDate) {
-        subscribeRepository.updateCreatedDate(id,createdDate);
+    public Subscribe getById(String email,long id) {
+        mUser user= userRepository.findByEmail(email);
+        return user.getSubscribes().stream().filter(s->s.getId()==id).findFirst().get();
     }
 
     @Override
-    public void updateNextPaymentDate(long id, Date nextPaymentDate) {
-        subscribeRepository.updateNextPaymentDate(id, nextPaymentDate);
+    public List<Subscribe> getByCardId(String email, long card_id) {
+        mUser user= userRepository.findByEmail(email);
+        user.getSubscribes().stream().filter(s->s.getCard().getId()==card_id).collect(Collectors.toList());
+        return user.getSubscribes().stream().filter(s->s.getCard().getId()==card_id).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Subscribe> getAll(String email) {
+        mUser user= userRepository.findByEmail(email);
+        return user.getSubscribes();
     }
 }
