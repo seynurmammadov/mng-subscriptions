@@ -7,23 +7,12 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Title from "../Title/index";
+import { useSelector } from "react-redux";
+import "./style.scss";
+import moment from "moment";
 // import Title from "../";
 
 // Generate Order Data
-function createData(
-  id: any,
-  date: any,
-  name: any,
-  shipTo: any,
-  paymentMethod: any,
-  amount: any
-) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-function preventDefault(event: any) {
-  event.preventDefault();
-}
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -31,38 +20,64 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface ISubscriptions {
+  id?: number;
+  createdDate: Date;
+  fee: number;
+  isSubscribed: boolean;
+  name: string;
+  nextPaymentDate: string;
+}
+
+interface ISubState {
+  subs: { data: ISubscriptions[] };
+}
+
 export default function Orders() {
   const classes = useStyles();
+  const { data: subscriptions } = useSelector((state: ISubState) => state.subs);
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Subscriptions</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
+            <TableCell>#</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell>Created Date</TableCell>
+            <TableCell onClick={() => console.log(subscriptions)}>
+              Fee
+            </TableCell>
+            <TableCell>Is Subscribed</TableCell>
+            <TableCell align="right">Next Payment Date</TableCell>
           </TableRow>
         </TableHead>
-        {/* <TableBody>
-          {rows.map((row) => (
+        <TableBody>
+          {subscriptions.map((row, idx) => (
             <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
+              <TableCell>{idx + 1}</TableCell>
               <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
+              <TableCell>
+                {moment(row.createdDate).format("MMM Do YY")}
+              </TableCell>
+              <TableCell>{row.fee}</TableCell>
+              <TableCell>
+                {row.isSubscribed ? (
+                  <span style={{ background: "green" }} className="isSubs">
+                    {" "}
+                    Actived
+                  </span>
+                ) : (
+                  <span style={{ background: "red" }} className="isSubs">
+                    Deactived
+                  </span>
+                )}
+              </TableCell>
+              <TableCell align="right">{row.nextPaymentDate}</TableCell>
             </TableRow>
           ))}
-        </TableBody> */}
+        </TableBody>
       </Table>
-      <div className={classes.seeMore}>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          See more orders
-        </Link>
-      </div>
     </React.Fragment>
   );
 }

@@ -14,17 +14,15 @@ import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Link from "@material-ui/core/Link";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-// import { mainListItems, secondaryListItems } from "./listItems";
-import Chart from "./Chart/index";
 import Deposits from "./Deposits/index";
 import Orders from "./Orders";
-import { getAllSubs } from "../../redux/actions/Subscription";
+import { getAllSubs, getPaginateSubs } from "../../redux/actions/Subscription";
 import { useDispatch } from "react-redux";
 import AddNewSubs from "./AddSubs";
+import PaginationSubs from "./Pagination";
 // import SliderCard from "./Slider";
 
 const drawerWidth = 240;
@@ -120,9 +118,9 @@ export default function Dashboard() {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const dispatch = useDispatch();
-  //   React.useEffect(() => {
-  //     dispatch(getAllSubs());
-  //   });
+  React.useEffect(() => {
+    dispatch(getPaginateSubs(1, 10));
+  }, []);
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -164,21 +162,11 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
-            {/* <SliderCard /> */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                {/* <Chart /> */}
-                {/* <SliderCard /> */}
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
                 <Deposits />
               </Paper>
             </Grid>
-            {/* Recent Orders */}
             <AddNewSubs />
             <Grid item xs={12}>
               <Paper className={classes.paper}>
@@ -186,9 +174,9 @@ export default function Dashboard() {
               </Paper>
             </Grid>
           </Grid>
-          {/* <Box pt={4}>
-            <Copyright />
-          </Box> */}
+          <Box textAlign="center">
+            <PaginationSubs />
+          </Box>
         </Container>
       </main>
     </div>

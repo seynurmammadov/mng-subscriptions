@@ -61,7 +61,7 @@ interface IProps {
 }
 export const Sidebar = (props: IProps) => {
   const { window } = props;
-  const [logined, setLogined] = React.useState(false);
+  const [logined, setLogined] = React.useState<Storage>();
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -76,7 +76,7 @@ export const Sidebar = (props: IProps) => {
     [push]
   );
   const handleLogout = React.useCallback(() => {
-    localStorage.removeItem("user_exist");
+    localStorage.removeItem("token");
     push("/login");
   }, [push]);
 
@@ -84,15 +84,14 @@ export const Sidebar = (props: IProps) => {
     setMobileOpen(!mobileOpen);
   };
 
+  React.useEffect(() => {
+    let token: any =
+      localStorage.getItem("token") && localStorage.getItem("token");
+    setLogined(token);
+  }, []);
   const drawer = (
     <div>
       <Box textAlign="center" marginY={5} style={{ cursor: "pointer" }}>
-        {/* <img
-          src="https://image.shutterstock.com/image-vector/vector-sign-music-illustration-musical-260nw-1199333155.jpg"
-          alt="logo"
-          width="80"
-        /> */}
-        <Typography variant="body2">Photo</Typography>
         <Box>
           <Typography variant="h4">Name Surname</Typography>
         </Box>

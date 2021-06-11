@@ -3,10 +3,10 @@ import { IAction } from "../../interface/action";
 
 const initialState = {
   status: "",
-  data: {},
+  data: [],
   errors: [],
 };
-export function reducerUser(state = initialState, action: IAction) {
+export function reducerSubs(state = initialState, action: IAction) {
   switch (action.type) {
     case `${ACTION_TYPES.GET_SUBS}_PENDING`:
       return {
