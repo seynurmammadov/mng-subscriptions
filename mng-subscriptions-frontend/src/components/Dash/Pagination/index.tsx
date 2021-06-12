@@ -27,7 +27,7 @@ interface ISubscriptions {
 }
 
 interface ISubState {
-  subs: { data: ISubscriptions[] };
+  subs: { data: { list: ISubscriptions[] } };
 }
 
 export default function PaginationSubs() {
@@ -41,7 +41,6 @@ export default function PaginationSubs() {
 
       if (currentPage) {
         dispatch(getPaginateSubs(Number(currentPage), 10));
-        console.log(subsAll);
       } else {
         console.log("target", e.currentTarget);
       }
@@ -58,6 +57,7 @@ export default function PaginationSubs() {
         count={Math.ceil(subsAll?.length / 10)}
         color="primary"
         onClick={handlePagination}
+        onChange={handlePagination}
       />
     </div>
   );

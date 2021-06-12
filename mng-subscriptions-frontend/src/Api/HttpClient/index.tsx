@@ -17,12 +17,29 @@ export class HttpClient {
   async post(url: string, body: object) {
     return await axios.post(`${this.baseUrl}/${url}`, body);
   }
+  async postWithToken(url: string, body: object) {
+    return await axios.post(`${this.baseUrl}/${url}`, body, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    });
+  }
   async getByToken(url: string) {
     console.log(localStorage.getItem("token"));
 
     return await axios.get(`${this.baseUrl}/${url}`, {
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
+      },
+    });
+  }
+
+  async getUserWithToken(url: string, token: string) {
+    // console.log(localStorage.getItem("token"));
+
+    return await axios.get(`${this.baseUrl}/${url}`, {
+      headers: {
+        Authorization: `${localStorage.getItem(token)}`,
       },
     });
   }

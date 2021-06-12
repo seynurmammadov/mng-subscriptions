@@ -13,7 +13,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { IUser } from "../../../redux/interface/auth";
 import { registerUser } from "../../../redux/actions/Auth";
 import { useDispatch } from "react-redux";
@@ -47,7 +46,6 @@ export default function Register() {
     name: "",
     surname: "",
     password: "",
-    // createdAt: Date.now(),
     phone: "0777777777",
   });
 

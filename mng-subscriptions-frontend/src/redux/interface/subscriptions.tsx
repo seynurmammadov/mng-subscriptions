@@ -19,9 +19,9 @@ export interface ISubs {
   id?: number;
   name: string;
   fee?: number;
-  createdDate: Date;
-  nextPaymentDate: Date;
-  isSubscribed: boolean;
+  createdDate?: any;
+  nextPaymentDate: any;
+  subscribed?: boolean;
   category?: ICategory;
   mUser?: IUser;
   card?: ICards;

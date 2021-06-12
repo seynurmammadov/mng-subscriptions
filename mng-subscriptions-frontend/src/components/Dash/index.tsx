@@ -15,15 +15,14 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import Deposits from "./Deposits/index";
-import Orders from "./Orders";
-import { getAllSubs, getPaginateSubs } from "../../redux/actions/Subscription";
+import Deposits from "./Balances";
+import Orders from "./Subscriptions";
+import { getPaginateSubs } from "../../redux/actions/Subscription";
 import { useDispatch } from "react-redux";
 import AddNewSubs from "./AddSubs";
 import PaginationSubs from "./Pagination";
-// import SliderCard from "./Slider";
+import Cards from "./Cards/index";
 
 const drawerWidth = 240;
 
@@ -112,73 +111,39 @@ export default function Dashboard() {
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getPaginateSubs(1, 10));
-  }, []);
+  }, [dispatch]);
   return (
-    <div className={classes.root}>
+    // <div className={classes.root}>
+    <>
       <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-      >
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(
-              classes.menuButton,
-              open && classes.menuButtonHidden
-            )}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            Dashboard
-          </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid>
-            <AddNewSubs />
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
+      <Container maxWidth="lg" className={classes.container}>
+        <Grid container spacing={3}>
+          <Grid item md={8} lg={9}>
+            <Box marginBottom={5}>
+              <Cards />
+            </Box>
           </Grid>
-          <Box textAlign="center">
-            <PaginationSubs />
-          </Box>
-        </Container>
-      </main>
-    </div>
+          <Grid item md={4} lg={3}>
+            <Paper className={fixedHeightPaper}>
+              <Deposits />
+            </Paper>
+          </Grid>
+          <AddNewSubs />
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              <Orders />
+            </Paper>
+          </Grid>
+        </Grid>
+        <Box textAlign="center">
+          <PaginationSubs />
+        </Box>
+      </Container>
+    </>
   );
 }
