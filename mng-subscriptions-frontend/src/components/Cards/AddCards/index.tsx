@@ -9,19 +9,25 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { ISubs } from "../../../redux/interface/subscriptions";
 import moment from "moment";
-import { editSubscription } from "../../../redux/actions/Subscription";
+import { create } from "domain";
+import { subscriptionService } from "../../../Api/Service/Subs";
+import {
+  createSubscription,
+  getAllSubs,
+} from "../../../redux/actions/Subscription";
 import { useDispatch } from "react-redux";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import { ISubscriptions } from "../Subscriptions/index";
+import { boolean } from "yup";
+import { ICards } from "../../../redux/interface/cards";
+import { createCard } from "../../../redux/actions/Cards";
 
-const EditSubs: React.FC<{ row: ISubscriptions }> = ({ row }) => {
+export default function AddNewCards() {
   const [open, setOpen] = React.useState(false);
-  const [inputVal, setInputVal] = React.useState<ISubs>({
-    name: row.name,
-    fee: row.fee,
-    createdDate: row.createdDate,
-    nextPaymentDate: Date,
-    subscribed: row.subscribed,
+  const [inputVal, setInputVal] = React.useState<ICards>({
+    name: "",
+    cardNumber: 0,
+    expValidation: "",
+    CVV: 0,
+    balance: 1000,
   });
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,16 +43,10 @@ const EditSubs: React.FC<{ row: ISubscriptions }> = ({ row }) => {
         ...prevState,
         [name]: value,
       }));
-      if (name === "fee") {
+      if (name === "cardNumber") {
         setInputVal((prevState) => ({
           ...prevState,
           [name]: parseInt(value),
-        }));
-      }
-      if (name === "createdDate" || name === "nextPaymentDate") {
-        setInputVal((prevState) => ({
-          ...prevState,
-          [name]: moment(value).format("yyyy-MM-DD "),
         }));
       }
     },
@@ -55,14 +55,14 @@ const EditSubs: React.FC<{ row: ISubscriptions }> = ({ row }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = React.useCallback(() => {
-    editSubscription(dispatch, inputVal, row.id);
+    dispatch(createCard(inputVal));
     handleClose();
   }, [inputVal, dispatch]);
 
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        <EditOutlinedIcon />
+        Add new Cards
       </Button>
       <Dialog
         open={open}
@@ -83,7 +83,6 @@ const EditSubs: React.FC<{ row: ISubscriptions }> = ({ row }) => {
             type="text"
             fullWidth
             name="name"
-            defaultValue={row.name}
             onChange={handleChange}
           />
           <TextField
@@ -91,21 +90,27 @@ const EditSubs: React.FC<{ row: ISubscriptions }> = ({ row }) => {
             id="fee"
             label="Fee"
             type="fee"
-            name="fee"
+            name="cardNumber"
             fullWidth
-            defaultValue={row.fee}
+            required
             onChange={handleChange}
           />
           <TextField
-            id="date"
-            label="CreatedDate"
-            type="date"
-            defaultValue={row.createdDate}
+            margin="dense"
+            id="fee"
+            label="CVV"
+            type="fee"
+            name="CVV"
             fullWidth
-            name="createdDate"
-            InputLabelProps={{
-              shrink: true,
-            }}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            id="name"
+            label="Exp Val"
+            type="text"
+            fullWidth
+            name="expValidation"
             onChange={handleChange}
           />
         </DialogContent>
@@ -120,5 +125,4 @@ const EditSubs: React.FC<{ row: ISubscriptions }> = ({ row }) => {
       </Dialog>
     </div>
   );
-};
-export default EditSubs;
+}

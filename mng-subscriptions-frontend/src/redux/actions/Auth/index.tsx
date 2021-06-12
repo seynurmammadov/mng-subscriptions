@@ -23,9 +23,7 @@ export const userLogin = (data: ILogin, push: any) => (dispatch: Function) => {
       authService.getUser().then(({ data }) => {
         localStorage.setItem("user", JSON.stringify(data));
       });
-    })
-    .then(() => {
-      push("/dashboard");
+      push("/");
     });
 };
 

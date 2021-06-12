@@ -18,7 +18,7 @@ class SubscriptionService extends HttpClient {
   }
 
   updateSubs(id: number, body: ISubs) {
-    return this.put("subscriptions", id, body);
+    return this.putWithToken("subscribes", id, body);
   }
 }
 export const subscriptionService = new SubscriptionService();

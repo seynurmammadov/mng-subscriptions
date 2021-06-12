@@ -14,3 +14,19 @@ export const getCardsList = () => (dispatch: any) => {
     });
   });
 };
+export const createCard = (body: any) => (dispatch: any) => {
+  dispatch({
+    type: `${ACTION_TYPES.CREATE_CARDS}_PENDING`,
+  });
+  cardsService
+    .createCards(body)
+    .then(({ data }) => {
+      dispatch({
+        type: `${ACTION_TYPES.CREATE_CARDS}_SUCCESS`,
+        payload: data,
+      });
+    })
+    .then(() => {
+      dispatch(getCardsList());
+    });
+};

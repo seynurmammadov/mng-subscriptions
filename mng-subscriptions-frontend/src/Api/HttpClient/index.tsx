@@ -47,6 +47,15 @@ export class HttpClient {
   async put(url: string, id: number | string, body: object) {
     return await axios.put(`${this.baseUrl}/${url}/${id}`, body);
   }
+  async putWithToken(url: string, id: number | string, body: object) {
+    // console.log(localStorage.getItem("token"));
+
+    return await axios.put(`${this.baseUrl}/${url}/${id}`, body, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    });
+  }
 
   async delete(url: string, id: number | string) {
     return await axios.delete(`${this.baseUrl}/${url}/${id}`);

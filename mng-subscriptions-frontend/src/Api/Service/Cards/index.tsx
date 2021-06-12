@@ -9,5 +9,8 @@ class CardsService extends HttpClient {
   getCards() {
     return this.getByToken("cards");
   }
+  createCards(body: any) {
+    return this.postWithToken("cards", body);
+  }
 }
 export const cardsService = new CardsService();

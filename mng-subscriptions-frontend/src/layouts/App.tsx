@@ -16,9 +16,9 @@ import { getCurrentUser } from "../redux/actions/Auth";
 import Cards from "../components/Cards";
 import CardsList from "../components/Cards";
 import { authService } from "../Api/Service/Auth";
+import AddCards from "../components/Cards/AddCards";
 
 const ProtectedRoute = ({ children, ...rest }: any) => {
-  // const user = useSelector((state: any) => state.user);
   const user = JSON.parse(localStorage.getItem("user")!);
   return user?.id ? (
     <Route {...rest}>{children}</Route>
@@ -27,24 +27,8 @@ const ProtectedRoute = ({ children, ...rest }: any) => {
   );
 };
 
-// const AuthRoute = ({ children, ...rest }: any) => {
-//   // const user = useSelector((state: any) => state.user);
-//   const user = JSON.parse(localStorage.getItem("user")!);
-//   return !user?.id ? (
-//     <Route {...rest}>{children}</Route>
-//   ) : (
-//     <Redirect to="/dashboard" />
-//   );
-// };
 function App() {
-  // const user = useSelector((state: any) => state.user);
-  const user = JSON.parse(localStorage.getItem("user")!);
-  // const token = localStorage.getItem("user")!;
-
   const dispatch = useDispatch();
-  // React.useEffect(() => {
-  //   dispatch(getCurrentUser());
-  // }, [dispatch]);
 
   React.useEffect(() => {
     dispatch(getCurrentUser());
@@ -52,25 +36,28 @@ function App() {
 
   return (
     <Router>
-      {user?.id && <Sidebar />}
+      <Sidebar />
       <Switch>
-        <Route path="/login" exact>
-          <Login />
-        </Route>
-        <Route path="/register" exact>
-          <Register />
-        </Route>
         <div className="App">
           <div style={{ marginLeft: "20%" }}>
-            <ProtectedRoute path="/dashboard" exact>
+            <Route path="/login" exact>
+              <Login />
+            </Route>
+            <Route path="/register" exact>
+              <Register />
+            </Route>
+            <Route path="/" exact>
               <Dashboard />
-            </ProtectedRoute>
-            <ProtectedRoute path="/cards" exact>
+            </Route>
+            <Route path="/cards" exact>
               <CardsList />
-            </ProtectedRoute>
+            </Route>
+            <Route path="/addnewcards" exact>
+              <AddCards />
+            </Route>
+            <Redirect to="/login" />
           </div>
         </div>
-        <Redirect to="/login" />
       </Switch>
     </Router>
   );

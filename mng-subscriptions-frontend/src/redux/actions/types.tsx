@@ -7,4 +7,5 @@ export const ACTION_TYPES = {
   GET_SUBS: "GET_SUBS",
 
   GET_CARDS: "GET_CARDS",
+  CREATE_CARDS: "CREATE_CARDS",
 };

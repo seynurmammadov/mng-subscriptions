@@ -28,6 +28,26 @@ export function reducerCards(state = initialState, action: IAction) {
         errors: [...action.errors],
       };
 
+    case `${ACTION_TYPES.CREATE_CARDS}_PENDING`:
+      return {
+        ...state,
+        status: "PENDING",
+      };
+
+    case `${ACTION_TYPES.CREATE_CARDS}_SUCCESS`:
+      return {
+        ...state,
+        status: "SUCCESS",
+        data: action.payload,
+      };
+
+    case `${ACTION_TYPES.CREATE_CARDS}_ERROR`:
+      return {
+        ...state,
+        status: "ERROR",
+        errors: [...action.errors],
+      };
+
     default:
       return state;
   }

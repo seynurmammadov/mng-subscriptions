@@ -10,6 +10,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import avatar from "./avatar.png";
 import {
   makeStyles,
   useTheme,
@@ -19,12 +20,22 @@ import {
 import { Box } from "@material-ui/core";
 import { useHistory } from "react-router";
 
+import Avatar from "@material-ui/core/Avatar";
+
+import "./style.scss";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
+    },
+    avatar: {
+      width: theme.spacing(14),
+      height: theme.spacing(14),
+      marginLeft: "60px",
+      marginBottom: "50px",
     },
     drawer: {
       [theme.breakpoints.up("sm")]: {
@@ -67,7 +78,7 @@ export const Sidebar = (props: IProps) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const routes = [
-    { route: "Sidebar", path: "/dashboard" },
+    { route: "Subscriptions", path: "/" },
     { route: "Cards", path: "/cards" },
   ];
   const { push } = useHistory();
@@ -80,8 +91,6 @@ export const Sidebar = (props: IProps) => {
   );
   const handleLogout = React.useCallback(() => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    // setLogined("");
     push("/login");
   }, [push]);
 
@@ -98,7 +107,13 @@ export const Sidebar = (props: IProps) => {
     <div>
       <Box textAlign="center" marginY={5} style={{ cursor: "pointer" }}>
         <Box>
-          <Typography variant="h4">Name Surname</Typography>
+          <Avatar
+            alt="Remy Sharp"
+            id="avatar"
+            src={avatar}
+            className={classes.avatar}
+          />
+          <Typography variant="h5">Name Surname</Typography>
         </Box>
       </Box>
       <Divider />
@@ -113,7 +128,7 @@ export const Sidebar = (props: IProps) => {
       </List>
       <Divider />
       <List>
-        <div onClick={logined && handleLogout}>
+        <div onClick={handleLogout}>
           <ListItem button>
             <ListItemText>
               {logined ? <span>Log out</span> : <span>Log in</span>}
