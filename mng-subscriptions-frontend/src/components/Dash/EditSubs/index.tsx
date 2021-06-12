@@ -9,22 +9,17 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { ISubs } from "../../../redux/interface/subscriptions";
 import moment from "moment";
-import { create } from "domain";
-import { subscriptionService } from "../../../Api/Service/Subs";
-import {
-  createSubscription,
-  getAllSubs,
-} from "../../../redux/actions/Subscription";
+import { createSubscription } from "../../../redux/actions/Subscription";
 import { useDispatch } from "react-redux";
 
-export default function AddNewSubs() {
+export default function EditSubs() {
   const [open, setOpen] = React.useState(false);
-  const [addedSubs, setSubs] = React.useState(false);
   const [inputVal, setInputVal] = React.useState<ISubs>({
     name: "",
     fee: 0,
     createdDate: Date,
     nextPaymentDate: Date,
+    isSubscribed: true,
   });
   const handleClickOpen = () => {
     setOpen(true);

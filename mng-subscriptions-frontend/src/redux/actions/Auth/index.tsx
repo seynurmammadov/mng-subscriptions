@@ -7,21 +7,29 @@ export const registerUser = (data: IUser) => (dispatch: Function) => {
 };
 
 export const userLogin = (data: ILogin, push: any) => (dispatch: Function) => {
+  // dispatch({
+  //   type: `${ACTION_TYPES.USER_LOGIN}_PENDING`,
+  // });
+  authService.loginUser(data).then(({ data }) => {
+    // console.log("data", data);
+    // dispatch({
+    //   type: `${ACTION_TYPES.USER_LOGIN}_SUCCESS`,
+    //   payload: data,
+    // });
+    localStorage.setItem("token", data.token);
+    push("/dashboard");
+  });
+};
+
+export const getCurrentUser = () => (dispatch: Function) => {
   dispatch({
     type: `${ACTION_TYPES.USER_LOGIN}_PENDING`,
   });
-  authService
-    .loginUser(data)
-    .then(({ data }) => {
-      console.log("data", data);
-      dispatch({
-        type: `${ACTION_TYPES.USER_LOGIN}_SUCCESS`,
-        payload: data,
-      });
 
-      localStorage.setItem("token", data.token);
-    })
-    .then(() => {
-      push("/dasboard");
+  authService.getUser().then(({ data }) => {
+    dispatch({
+      type: `${ACTION_TYPES.USER_LOGIN}_SUCCESS`,
+      payload: data,
     });
+  });
 };

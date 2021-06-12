@@ -66,7 +66,10 @@ export const Sidebar = (props: IProps) => {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const routes = [{ route: "Dashboard", path: "/playlist" }];
+  const routes = [
+    { route: "Sidebar", path: "/dashboard" },
+    { route: "Cards", path: "/cards" },
+  ];
   const { push } = useHistory();
 
   const handleRoute = React.useCallback(

@@ -10,6 +10,8 @@ import Title from "../Title/index";
 import { useSelector } from "react-redux";
 import "./style.scss";
 import moment from "moment";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 // import Title from "../";
 
 // Generate Order Data
@@ -30,12 +32,13 @@ interface ISubscriptions {
 }
 
 interface ISubState {
-  subs: { data: ISubscriptions[] };
+  subs: { data: { list: ISubscriptions[] } };
 }
 
 export default function Orders() {
-  const classes = useStyles();
-  const { data: subscriptions } = useSelector((state: ISubState) => state.subs);
+  const { list: subscriptions } = useSelector(
+    (state: ISubState) => state.subs.data
+  );
   return (
     <React.Fragment>
       <Title>Subscriptions</Title>
@@ -50,10 +53,11 @@ export default function Orders() {
             </TableCell>
             <TableCell>Is Subscribed</TableCell>
             <TableCell align="right">Next Payment Date</TableCell>
+            <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {subscriptions.map((row, idx) => (
+          {subscriptions?.map((row, idx) => (
             <TableRow key={row.id}>
               <TableCell>{idx + 1}</TableCell>
               <TableCell>{row.name}</TableCell>
@@ -74,6 +78,14 @@ export default function Orders() {
                 )}
               </TableCell>
               <TableCell align="right">{row.nextPaymentDate}</TableCell>
+              <TableCell align="right">
+                <span className="actionSubs">
+                  <EditOutlinedIcon />
+                </span>
+                <span className="actionSubs">
+                  <DeleteForeverIcon />
+                </span>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
