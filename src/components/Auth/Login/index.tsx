@@ -15,6 +15,10 @@ import { Link, useHistory } from "react-router-dom";
 import { ILogin } from "../../../redux/interface/auth";
 import { useDispatch } from "react-redux";
 import { userLogin } from "../../../redux/actions/Auth";
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
+
 
 function Copyright() {
   return (
@@ -62,6 +66,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .email('Enter a valid email')
+    .required('Email is required'),
+  password: yup
+    .string()
+    .min(8, 'Password should be of minimum 8 characters length')
+    .required('Password is required'),
+});
+
 export default function Login() {
   const classes = useStyles();
 
@@ -72,13 +88,19 @@ export default function Login() {
 
   const dispatch = useDispatch();
   const handleChange = React.useCallback(
+    
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
 
+      
+
+      const { name, value } = e.target;
+      
       setInputVal((prevState) => ({
         ...prevState,
         [name]: value,
       }));
+      formik.handleChange(e)
+      
     },
     [setInputVal]
   );
@@ -88,9 +110,22 @@ export default function Login() {
     (e) => {
       e.preventDefault();
       userLogin(inputVal, push)(dispatch);
+      formik.handleSubmit()
     },
     [inputVal]
   );
+
+  const formik = useFormik({
+    initialValues: {
+      email: 'email@example.com',
+      password: 'password',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      // alert(JSON.stringify(values, null, 2));
+    },
+  });
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -115,6 +150,13 @@ export default function Login() {
               autoComplete="email"
               autoFocus
               onChange={handleChange}
+
+              value={formik.values.email}
+              
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+            
+
             />
             <TextField
               variant="outlined"
@@ -127,6 +169,14 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
               onChange={handleChange}
+
+
+              value={formik.values.password}
+              
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+
+
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
