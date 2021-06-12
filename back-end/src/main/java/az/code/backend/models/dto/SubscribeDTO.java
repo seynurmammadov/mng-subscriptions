@@ -15,8 +15,9 @@ public class SubscribeDTO {
     private long id;
     private String name;
     private double fee;
-    private LocalDateTime createdDate;
-    private LocalDateTime nextPaymentDate;
+    private LocalDate createdDate;
+    private LocalDate nextPaymentDate;
+    private String timeLeft;
     private boolean isSubscribed;
     private CategoryDTO category;
 }

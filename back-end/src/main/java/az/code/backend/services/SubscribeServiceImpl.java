@@ -24,6 +24,7 @@ public class SubscribeServiceImpl implements SubscribeService {
 
     @Override
     public void save(String email,Subscribe subscribe) {
+        subscribe.setNextPaymentDate(subscribe.getCreatedDate().plusMonths(1));
         subscribeDAO.save( email,subscribe);
     }
 

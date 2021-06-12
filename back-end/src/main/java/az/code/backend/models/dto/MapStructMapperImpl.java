@@ -6,6 +6,10 @@ import az.code.backend.models.Subscribe;
 import az.code.backend.models.mUser;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +27,7 @@ public class MapStructMapperImpl implements MapStructMapper{
         subscribeDTO.setCreatedDate(subscribe.getCreatedDate());
         subscribeDTO.setNextPaymentDate(subscribe.getNextPaymentDate());
         subscribeDTO.setSubscribed(subscribe.isSubscribed());
+        subscribeDTO.setTimeLeft(String.valueOf(Period.between(subscribe.getNextPaymentDate(), LocalDate.now()).getDays()));
         subscribeDTO.setCategory(catToCatDTO(subscribe.getCategory()));
         return subscribeDTO;
     }
