@@ -1,13 +1,13 @@
 package az.code.backend.services;
 
 import az.code.backend.dao.UserDAO;
+import az.code.backend.models.dto.MapStructMapper;
+import az.code.backend.models.dto.UserDTO;
 import az.code.backend.models.mUser;
 import az.code.backend.services.interfaces.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -16,8 +16,12 @@ public class UserServiceImpl implements UserService {
     final
     PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder) {
+    final
+    MapStructMapper mapStructMapper;
+
+    public UserServiceImpl(MapStructMapper mapStructMapper,UserDAO userDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
+        this.mapStructMapper = mapStructMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -26,5 +30,10 @@ public class UserServiceImpl implements UserService {
         user.setRole("USER");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.save(user);
+    }
+
+    @Override
+    public UserDTO get(String email) {
+        return mapStructMapper.userToUserDTO(userDAO.get(email));
     }
 }

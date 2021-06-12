@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("api/subscribes")
-
 public class SubscribeController {
     final
     SubscribeService subscribeService;
@@ -29,9 +28,8 @@ public class SubscribeController {
     public ResponseEntity<Pagination<SubscribeDTO>> getAll(HttpServletRequest request,
                                                            @RequestParam(required = false) Integer count,
                                                            @RequestParam(required = false) Integer page) {
-        String str =jwtTokenUtil.getUsernameFromToken(request.getHeader("Authorization"));
-        System.out.println(str);
-        return new ResponseEntity<>(subscribeService.getAll(str,request, count, page), HttpStatus.OK);
+
+        return new ResponseEntity<>(subscribeService.getAll(jwtTokenUtil.getUsernameFromToken(request.getHeader("Authorization")),request, count, page), HttpStatus.OK);
     }
 
     @GetMapping("/card/{card_id}")
@@ -51,7 +49,11 @@ public class SubscribeController {
         subscribeService.save(jwtTokenUtil.getUsernameFromToken(request.getHeader("Authorization")),subscribe);
         return new ResponseEntity<>( HttpStatus.CREATED);
     }
-
+    @PutMapping
+    public ResponseEntity update(HttpServletRequest request,@RequestBody Subscribe subscribe) {
+        subscribeService.save(jwtTokenUtil.getUsernameFromToken(request.getHeader("Authorization")),subscribe);
+        return new ResponseEntity<>( HttpStatus.CREATED);
+    }
     @PutMapping("/subscribe/{id}")
     public ResponseEntity subscribe(HttpServletRequest request,@PathVariable long id){
         subscribeService.subscribe(jwtTokenUtil.getUsernameFromToken(request.getHeader("Authorization")),id);

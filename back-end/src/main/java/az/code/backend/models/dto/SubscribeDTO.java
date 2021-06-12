@@ -2,6 +2,8 @@ package az.code.backend.models.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Builder
@@ -13,8 +15,8 @@ public class SubscribeDTO {
     private long id;
     private String name;
     private double fee;
-    private Date createdDate;
-    private Date nextPaymentDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime nextPaymentDate;
     private boolean isSubscribed;
     private CategoryDTO category;
 }

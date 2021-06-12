@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "cards")
-public class Card {
+public class    Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
