@@ -7,7 +7,7 @@ interface ICategory {
 }
 
 interface ICards {
-  id: number;
+  id?: number;
   name: string;
   cardNumber: number;
   expvalidation: string;

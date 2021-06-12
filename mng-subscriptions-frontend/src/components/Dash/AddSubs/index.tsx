@@ -103,7 +103,7 @@ export default function AddNewSubs() {
             id="date"
             label="CreatedDate"
             type="date"
-            defaultValue="2017-05-24"
+            defaultValue={moment().format("yyyy-MM-DD ")}
             fullWidth
             name="createdDate"
             InputLabelProps={{

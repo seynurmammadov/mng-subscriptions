@@ -1,16 +1,18 @@
 import React from "react";
 import "./style.scss";
 import { Container, Row, Col } from "reactstrap";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getCardsList } from "../../redux/actions/Cards";
 import { ICards } from "../../redux/interface/cards";
+import AddNewCards from "./AddCards";
 
 interface ICard {
   cards: { data: { list: ICards[] } };
 }
 function CardsList() {
   const dispatch = useDispatch();
+  const [isAddNewCards, setAddNewsCards] = React.useState(false);
 
   const { data: cards } = useSelector((state: ICard) => state.cards);
 
@@ -25,8 +27,11 @@ function CardsList() {
             Cards
           </Typography>
         </Box>
+        <Box>
+          <AddNewCards />
+        </Box>
         {cards?.list?.map((item) => (
-          <Col md="4">
+          <Col md="4" className="my-5">
             <div className="card mb-5">
               <div
                 className="card-content"

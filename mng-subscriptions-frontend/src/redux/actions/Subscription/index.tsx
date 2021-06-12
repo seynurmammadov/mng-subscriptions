@@ -42,3 +42,8 @@ export const createSubscription = (dispatch: Function, body: ISubs) => {
     getAllSubsWithRedux(dispatch);
   });
 };
+export const editSubscription = (dispatch: Function, body: ISubs, id: any) => {
+  subscriptionService.updateSubs(id, body).then(({ data }) => {
+    getAllSubsWithRedux(dispatch);
+  });
+};

@@ -107,18 +107,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getPaginateSubs(1, 10));
   }, [dispatch]);
   return (
-    // <div className={classes.root}>
     <>
       <CssBaseline />
       <Container maxWidth="lg" className={classes.container}>

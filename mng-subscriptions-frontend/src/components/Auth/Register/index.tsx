@@ -74,9 +74,7 @@ export default function Register() {
       } else {
         console.log("false");
       }
-      // if (formState.email && formState.password) {
       registerUser(formState)(dispatch);
-      // }
     },
     [formState, confirmPass]
   );

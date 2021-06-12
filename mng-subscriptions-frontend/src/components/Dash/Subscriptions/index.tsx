@@ -10,13 +10,14 @@ import Title from "../Title/index";
 import { useSelector } from "react-redux";
 import "./style.scss";
 import moment from "moment";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import EditSubs from "../EditSubs/index";
 // import Title from "../";
 
 // Generate Order Data
 
-interface ISubscriptions {
+export interface ISubscriptions {
   id?: number;
   createdDate: Date;
   fee: number;
@@ -74,7 +75,7 @@ export default function Orders() {
               <TableCell align="right">{row.nextPaymentDate}</TableCell>
               <TableCell align="right">
                 <span className="actionSubs">
-                  <EditOutlinedIcon />
+                  <EditSubs row={row} />
                 </span>
                 <span className="actionSubs">
                   <DeleteForeverIcon />
