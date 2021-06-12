@@ -7,3 +7,12 @@
   display: inline-block;
   color: #fff;
 }
+
+.actionSubs {
+  transition: all 0.5s;
+  &:hover {
+    color: red;
+    transition: all 0.5s;
+    cursor: pointer;
+  }
+}

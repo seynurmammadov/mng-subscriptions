@@ -13,15 +13,33 @@ export const userLogin = (data: ILogin, push: any) => (dispatch: Function) => {
   authService
     .loginUser(data)
     .then(({ data }) => {
-      console.log("data", data);
       dispatch({
         type: `${ACTION_TYPES.USER_LOGIN}_SUCCESS`,
         payload: data,
       });
-
       localStorage.setItem("token", data.token);
     })
     .then(() => {
-      push("/dasboard");
+      authService.getUser().then(({ data }) => {
+        localStorage.setItem("user", JSON.stringify(data));
+      });
+    })
+    .then(() => {
+      push("/dashboard");
     });
 };
+
+export const getCurrentUser = () => (dispatch: Function) => {
+  dispatch({
+    type: `${ACTION_TYPES.GET_USER}_PENDING`,
+  });
+
+  authService.getUser().then(({ data }) => {
+    dispatch({
+      type: `${ACTION_TYPES.GET_USER}_SUCCESS`,
+      payload: data,
+    });
+  });
+};
+
+export const current = () => {};

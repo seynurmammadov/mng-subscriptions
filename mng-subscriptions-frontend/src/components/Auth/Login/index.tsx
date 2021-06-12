@@ -15,6 +15,8 @@ import { Link, useHistory } from "react-router-dom";
 import { ILogin } from "../../../redux/interface/auth";
 import { useDispatch } from "react-redux";
 import { userLogin } from "../../../redux/actions/Auth";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 function Copyright() {
   return (
@@ -34,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage:
+      "url(https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2851&q=80)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -62,6 +65,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(5, "Password should be of minimum 5 characters length")
+    .required("Password is required"),
+});
+
 export default function Login() {
   const classes = useStyles();
 
@@ -79,6 +93,7 @@ export default function Login() {
         ...prevState,
         [name]: value,
       }));
+      formik.handleChange(e);
     },
     [setInputVal]
   );
@@ -88,9 +103,22 @@ export default function Login() {
     (e) => {
       e.preventDefault();
       userLogin(inputVal, push)(dispatch);
+      formik.handleSubmit();
     },
-    [inputVal]
+    [inputVal, push]
   );
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      // alert(JSON.stringify(values, null, 2));
+    },
+  });
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -115,6 +143,9 @@ export default function Login() {
               autoComplete="email"
               autoFocus
               onChange={handleChange}
+              value={formik.values.email}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
             />
             <TextField
               variant="outlined"
@@ -127,6 +158,9 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
               onChange={handleChange}
+              value={formik.values.password}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

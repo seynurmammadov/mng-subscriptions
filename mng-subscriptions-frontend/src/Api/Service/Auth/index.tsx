@@ -7,10 +7,18 @@ class AuthService extends HttpClient {
   }
 
   registerUser(body: IUser) {
-    return this.post("register", body);
+    return this.post("user/register", body);
   }
   loginUser(body: ILogin) {
     return this.post("login", body);
+  }
+
+  getUser() {
+    return this.getByToken("user");
+  }
+
+  currentUser(token: string) {
+    return this.getUserWithToken("user", token);
   }
 }
 export const authService = new AuthService();

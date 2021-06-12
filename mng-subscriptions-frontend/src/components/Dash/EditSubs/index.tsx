@@ -9,22 +9,15 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { ISubs } from "../../../redux/interface/subscriptions";
 import moment from "moment";
-import { create } from "domain";
-import { subscriptionService } from "../../../Api/Service/Subs";
-import {
-  createSubscription,
-  getAllSubs,
-} from "../../../redux/actions/Subscription";
+import { createSubscription } from "../../../redux/actions/Subscription";
 import { useDispatch } from "react-redux";
-import { boolean } from "yup";
 
-export default function AddNewSubs() {
+export default function EditSubs() {
   const [open, setOpen] = React.useState(false);
-  const [addedSubs, setSubs] = React.useState(false);
   const [inputVal, setInputVal] = React.useState<ISubs>({
     name: "",
     fee: 0,
-    createdDate: moment(Date.now()).format("yyyy-MM-DD "),
+    createdDate: Date,
     nextPaymentDate: Date,
     subscribed: true,
   });
@@ -48,10 +41,10 @@ export default function AddNewSubs() {
           [name]: parseInt(value),
         }));
       }
-      if (name === "createdDate") {
+      if (name === "createdDate" || name === "nextPaymentDate") {
         setInputVal((prevState) => ({
           ...prevState,
-          [name]: moment(value).format("yyyy-MM-DD "),
+          [name]: moment(value).format("MMM Do YY"),
         }));
       }
     },
@@ -111,6 +104,42 @@ export default function AddNewSubs() {
             }}
             onChange={handleChange}
           />
+          <TextField
+            id="date"
+            label="nextPaymentDate"
+            type="date"
+            defaultValue="2017-05-24"
+            fullWidth
+            name="nextPaymentDate"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={handleChange}
+          />
+          <FormControl style={{ width: "100%" }}>
+            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <Select
+              style={{ width: "100%" }}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+            >
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl style={{ width: "100%" }}>
+            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <Select
+              style={{ width: "100%" }}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+            >
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
