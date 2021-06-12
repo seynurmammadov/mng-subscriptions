@@ -1,11 +1,14 @@
 package az.code.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -20,8 +23,8 @@ public class Subscribe {
     
     private String name;
     private double fee;
-    private Date createdDate;
-    private Date nextPaymentDate;
+    private LocalDate createdDate;
+    private LocalDate nextPaymentDate;
     private boolean isSubscribed=true;
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -33,14 +36,4 @@ public class Subscribe {
     @JoinColumn(name = "card_id")
     private Card card;
 
-    public Subscribe(String name, double fee, Date createdDate, Date nextPaymentDate, boolean isSubscribed, Category category, az.code.backend.models.mUser mUser, Card card) {
-        this.name = name;
-        this.fee = fee;
-        this.createdDate = createdDate;
-        this.nextPaymentDate = nextPaymentDate;
-        this.isSubscribed = isSubscribed;
-        this.category = category;
-        this.mUser = mUser;
-        this.card = card;
-    }
 }

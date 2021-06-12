@@ -27,8 +27,14 @@ public class SubscribeDAOImpl implements SubscribeDAO {
     @Override
     public void save(String email,Subscribe subscribe) {
         mUser user= userRepository.findByEmail(email);
+        subscribe.setMUser(user);
         user.getSubscribes().add(subscribe);
         userRepository.save(user);
+    }
+
+    @Override
+    public void save(Subscribe subscribe) {
+        subscribeRepository.save(subscribe);
     }
 
     @Override
@@ -70,4 +76,11 @@ public class SubscribeDAOImpl implements SubscribeDAO {
         mUser user= userRepository.findByEmail(email);
         return user.getSubscribes();
     }
+
+    @Override
+    public List<Subscribe> getAll() {
+        return subscribeRepository.findAll();
+    }
+
+
 }

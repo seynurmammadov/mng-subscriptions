@@ -3,6 +3,7 @@ package az.code.backend.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ public class mUser {
     private String password;
     private String name;
     private String surname;
-    private Date createdAt=new Date();
+    private LocalDateTime createdAt=LocalDateTime.now();
     private String phone;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "mUser",fetch = FetchType.EAGER)

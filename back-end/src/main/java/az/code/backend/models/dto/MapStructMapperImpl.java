@@ -1,9 +1,15 @@
 package az.code.backend.models.dto;
 
+import az.code.backend.models.Card;
 import az.code.backend.models.Category;
 import az.code.backend.models.Subscribe;
+import az.code.backend.models.mUser;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +27,7 @@ public class MapStructMapperImpl implements MapStructMapper{
         subscribeDTO.setCreatedDate(subscribe.getCreatedDate());
         subscribeDTO.setNextPaymentDate(subscribe.getNextPaymentDate());
         subscribeDTO.setSubscribed(subscribe.isSubscribed());
+        subscribeDTO.setTimeLeft(String.valueOf(Period.between(subscribe.getNextPaymentDate(), LocalDate.now()).getDays()));
         subscribeDTO.setCategory(catToCatDTO(subscribe.getCategory()));
         return subscribeDTO;
     }
@@ -33,10 +40,36 @@ public class MapStructMapperImpl implements MapStructMapper{
         if (category == null) {
             return null;
         }
-        CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setId(category.getId());
-        categoryDTO.setName(category.getName());
+        return CategoryDTO.builder().id(category.getId()).name(category.getName()).build();
+    }
 
-        return categoryDTO;
+    @Override
+    public UserDTO userToUserDTO(mUser user) {
+        if (user == null) {
+            return null;
+        }
+        return UserDTO.builder().id(user.getId()).name(user.getName()).surname(user.getSurname()).phone(user.getPhone()).build();
+    }
+
+    @Override
+    public CardDTO cardToCardDTO(Card card) {
+        return CardDTO.builder()
+                .id(card.getId())
+                .cardNumber(card.getCardNumber())
+                .CVV(card.getCVV())
+                .balance(card.getBalance())
+                .expValidation(card.getExpValidation())
+                .name(card.getName()).build();
+    }
+
+    @Override
+    public List<CardDTO> cardsToCardDTOs(List<Card> cards) {
+        return cards.stream().map(this::cardToCardDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CategoryDTO> catsToCatDTOs(List<Category> categories) {
+        return categories.stream().map(this::catToCatDTO).collect(Collectors.toList());
+
     }
 }

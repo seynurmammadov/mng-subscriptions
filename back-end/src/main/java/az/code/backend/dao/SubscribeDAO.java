@@ -7,10 +7,12 @@ import java.util.List;
 
 public interface SubscribeDAO {
     void save(String email,Subscribe subscribe);
+    void save(Subscribe subscribe);
     Subscribe delete(String email,long id);
     void unSubscribe(String email,long id);
     void subscribe(String email,long id);
     Subscribe getById(String email,long id);
     List<Subscribe> getByCardId(String email, long card_id);
     List<Subscribe> getAll(String email);
+    List<Subscribe> getAll();
 }
