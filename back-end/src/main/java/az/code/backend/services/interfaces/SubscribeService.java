@@ -9,6 +9,7 @@ import java.util.Date;
 
 public interface SubscribeService{
     void save(String email,Subscribe subscribe);
+    void update(String email,Subscribe subscribe,long id);
     SubscribeDTO delete(String email, long id);
     void unSubscribe(String email,long id);
     void subscribe(String email,long id);

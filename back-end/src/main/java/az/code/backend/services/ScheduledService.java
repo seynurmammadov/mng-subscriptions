@@ -22,18 +22,24 @@ public class ScheduledService {
         this.mailService = mailService;
     }
 
-    @Scheduled(cron = "0 0 23 * * ?", zone = "Asia/Baku")
+    @Scheduled(cron = "0 56 15 * * ?", zone = "Asia/Baku")
     public void sendMailScheduled(){
         List<Subscribe> subscribeLits = subscribeDAO.getAll();
+        System.out.println("asdd");
         subscribeLits.forEach(s->{
             LocalDate today =  LocalDate.now();
             LocalDate expDate = s.getNextPaymentDate().minusDays(1);
-            if(expDate.equals(today)){
-                mailService.sendMail(s.getMUser().getEmail(),"Subsctiption expiring","Your subscription expiring tomorrow "+s.getNextPaymentDate().toString());
+            try{
+                if(expDate.equals(today)){
+                    mailService.sendMail(s.getMUser().getEmail(),"Subsctiption expiring","Your subscription expiring tomorrow "+s.getNextPaymentDate().toString());
+                }
+                if(today.equals(s.getNextPaymentDate())){
+                    s.setNextPaymentDate(s.getNextPaymentDate().plusMonths(1));
+                    subscribeDAO.save(s);
+                }
             }
-            if(today.equals(s.getNextPaymentDate())){
-                s.setNextPaymentDate(s.getNextPaymentDate().plusMonths(1));
-                subscribeDAO.save(s);
+            catch (Exception e){
+
             }
         });
     }

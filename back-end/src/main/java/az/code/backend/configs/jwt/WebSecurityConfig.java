@@ -56,14 +56,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
-        httpSecurity.csrf().disable()
+        httpSecurity
+                .csrf().disable()
+                .cors().and()
                 // dont authenticate this particular request
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
                 .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/user/register").permitAll()
                 // all other requests need to be authenticated
-                        .anyRequest().authenticated().and()
+                .anyRequest().authenticated().and()
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
@@ -74,6 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     }
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
+
+            registry.addMapping("/**").allowedMethods("*").allowedHeaders("*");
     }
+
 }

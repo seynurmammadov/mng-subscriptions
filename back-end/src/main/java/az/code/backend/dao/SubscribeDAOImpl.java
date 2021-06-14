@@ -1,6 +1,7 @@
 package az.code.backend.dao;
 
 import az.code.backend.models.Subscribe;
+import az.code.backend.models.dto.CategoryDTO;
 import az.code.backend.models.mUser;
 import az.code.backend.repositories.SubscribeRepository;
 import az.code.backend.repositories.mUserRepository;
@@ -8,8 +9,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,7 +32,15 @@ public class SubscribeDAOImpl implements SubscribeDAO {
     public void save(String email,Subscribe subscribe) {
         mUser user= userRepository.findByEmail(email);
         subscribe.setMUser(user);
-        user.getSubscribes().add(subscribe);
+        Optional<Subscribe> subscribe1 =user.getSubscribes().stream().filter(s->s.getId()==subscribe.getId()).findFirst();
+         if( subscribe1.isPresent())
+         {
+             subscribe1.get().setCreatedDate(subscribe.getCreatedDate().plusMonths(1));
+            subscribeRepository.save(subscribe);
+         }else{
+             user.getSubscribes().add(subscribe);
+         }
+
         userRepository.save(user);
     }
 
@@ -38,11 +50,14 @@ public class SubscribeDAOImpl implements SubscribeDAO {
     }
 
     @Override
+    @Transactional
     public Subscribe delete(String email,long id) {
         Subscribe subscribe =getById(email,id);
         mUser user= userRepository.findByEmail(email);
-        user.getSubscribes().remove(subscribe);
-        userRepository.save(user);
+        if(user.getSubscribes().stream().filter(s->s.getId()==id).findFirst().isPresent()){
+//            user.getSubscribes().remove(user.getSubscribes().stream().filter(s->s.getId()==id).findFirst().get());
+      userRepository.deleteSubscriber(id);
+        }userRepository.save(user);
         return subscribe;
     }
 

@@ -23,6 +23,7 @@ public class CardDAOImpl implements CardDAO{
     @Override
     public void save(String email, Card card) {
         mUser user= userRepository.findByEmail(email);
+        card.setMUser(user);
         user.getCards().add(card);
         userRepository.save(user);
     }

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("api/subscribes")
+@CrossOrigin
 public class SubscribeController {
     final
     SubscribeService subscribeService;
@@ -43,15 +44,14 @@ public class SubscribeController {
     public ResponseEntity<SubscribeDTO> getByCardId(HttpServletRequest request,@PathVariable long id) {
         return new ResponseEntity<>(subscribeService.getById(jwtTokenUtil.getUsernameFromToken(request.getHeader("Authorization")),id), HttpStatus.OK);
     }
-
     @PostMapping
     public ResponseEntity save(HttpServletRequest request,@RequestBody Subscribe subscribe) {
         subscribeService.save(jwtTokenUtil.getUsernameFromToken(request.getHeader("Authorization")),subscribe);
         return new ResponseEntity<>( HttpStatus.CREATED);
     }
-    @PutMapping
-    public ResponseEntity update(HttpServletRequest request,@RequestBody Subscribe subscribe) {
-        subscribeService.save(jwtTokenUtil.getUsernameFromToken(request.getHeader("Authorization")),subscribe);
+    @PutMapping("/{id}")
+    public ResponseEntity update(HttpServletRequest request,@RequestBody Subscribe subscribe,@PathVariable long id) {
+        subscribeService.update(jwtTokenUtil.getUsernameFromToken(request.getHeader("Authorization")),subscribe,id);
         return new ResponseEntity<>( HttpStatus.CREATED);
     }
     @PutMapping("/subscribe/{id}")
